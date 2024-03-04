@@ -1,0 +1,52 @@
+{
+  "name": "nuxt-mollie-payments-components",
+  "version": "1.0.0",
+  "description": "Nuxt mollie payments components",
+  "repository": "https://github.com/benjamin-ott/nuxt-mollie-payments-components",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "release": "npm run lint && npm run prettier && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "prettier": "pnpm exec prettier . --write",
+    "prettier-check": "pnpm exec prettier . --check"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.8.2"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxt/module-builder": "^0.5.5",
+    "@nuxt/schema": "^3.9.3",
+    "@nuxt/test-utils": "^3.10.0",
+    "@shopware-pwa/composables-next": "canary",
+    "@shopware-pwa/nuxt3-module": "canary",
+    "@shopware/api-client": "canary",
+    "@types/node": "^20.11.6",
+    "changelogen": "^0.5.5",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "nuxt": "^3.9.3",
+    "prettier": "^3.2.5",
+    "vitest": "^1.2.1"
+  }
+}
