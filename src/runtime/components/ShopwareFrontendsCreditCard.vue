@@ -98,7 +98,10 @@ const newCardSelectValue = 'NEW'
 const currentMandateId = ref()
 const showNewCardForm = computed(
     () =>
-        currentMandateId.value === newCardSelectValue || !oneClickPaymentsActive.value || mandates?.value?.length === 0,
+        currentMandateId.value === newCardSelectValue ||
+        !oneClickPaymentsActive.value ||
+        !mandates?.value ||
+        mandates?.value?.length === 0,
 )
 
 const onMandateChange = async (mandateId: string | undefined) => {
