@@ -5,8 +5,8 @@ import { resolveOwnDependency } from './utils'
 
 export default defineNuxtModule<MollieOptions>({
     meta: {
-        name: 'mollie',
-        configKey: 'mollie',
+        name: 'nuxt-mollie-payments-components',
+        configKey: 'nuxtMolliePaymentsComponents',
     },
     async setup(options, nuxt) {
         const resolver = createResolver(import.meta.url)
