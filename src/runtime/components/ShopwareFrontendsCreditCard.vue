@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useShopwareContext, useUser } from '@shopware-pwa/composables-next'
 import type { MollieConfig, MollieLocale } from '../../types'
 import { computed, ref } from 'vue'
-import { useAsyncData } from '#imports'
+import { useShopwareContext, useUser, useAsyncData } from '#imports'
 import { ApiClientError } from '@shopware/api-client'
 
 const emits = defineEmits<{
@@ -57,7 +56,9 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => {
     if (!oneClickPaymentsActive.value || !user.value?.id) return []
 
     try {
-        const response = await apiClient.invoke(`getMandates get /mollie/mandates/${user.value?.id}`)
+        const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
+            userId: user.value?.id,
+        })
         return response?.mandates
     } catch (error) {
         if (error instanceof ApiClientError) {
@@ -70,7 +71,9 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => {
 
 const onCreditCardSubmit = async (token: string | undefined) => {
     try {
-        await apiClient.invoke(`saveCardToken post /mollie/creditcard/store-token/${user.value?.id}/${token}`, {
+        await apiClient.invoke('saveCardToken post /mollie/creditcard/store-token/{userId}/{token}', {
+            userId: user.value?.id,
+            token: token,
             shouldSaveCardDetail: shouldSaveCardDetail.value,
         })
     } catch (error) {

@@ -1,7 +1,6 @@
 import { defineNuxtModule, addPlugin, addImports, createResolver, addComponent } from '@nuxt/kit'
 
 import type { MollieOptions } from './types'
-import { resolveOwnDependency } from './utils'
 
 export default defineNuxtModule<MollieOptions>({
     meta: {
@@ -50,38 +49,24 @@ export default defineNuxtModule<MollieOptions>({
             },
         ])
 
-        const composablesDependency = await resolveOwnDependency('@shopware-pwa/composables-next', nuxt)
+        addComponent({
+            name: 'ShopwareFrontendsCreditCard',
+            filePath: resolver.resolve('./runtime/components/ShopwareFrontendsCreditCard.vue'),
+        })
 
-        const apiClientDependency = await resolveOwnDependency('@shopware/api-client', nuxt)
+        addComponent({
+            name: 'ShopwareFrontendsCreditCardRemoveMandates',
+            filePath: resolver.resolve('./runtime/components/ShopwareFrontendsCreditCardRemoveMandates.vue'),
+        })
 
-        if (composablesDependency && apiClientDependency) {
-            nuxt.options.alias['@shopware-pwa/composables-next'] = composablesDependency
+        addComponent({
+            name: 'ShopwareFrontendsIdeal',
+            filePath: resolver.resolve('./runtime/components/ShopwareFrontendsIdeal.vue'),
+        })
 
-            nuxt.options.alias['@shopware/api-client'] = apiClientDependency
-
-            addComponent({
-                name: 'ShopwareFrontendsCreditCard',
-                filePath: resolver.resolve('./runtime/components/ShopwareFrontendsCreditCard.vue'),
-            })
-
-            addComponent({
-                name: 'ShopwareFrontendsCreditCardRemoveMandates',
-                filePath: resolver.resolve('./runtime/components/ShopwareFrontendsCreditCardRemoveMandates.vue'),
-            })
-
-            addComponent({
-                name: 'ShopwareFrontendsIdeal',
-                filePath: resolver.resolve('./runtime/components/ShopwareFrontendsIdeal.vue'),
-            })
-
-            addComponent({
-                name: 'ShopwareFrontendsPos',
-                filePath: resolver.resolve('./runtime/components/ShopwareFrontendsPos.vue'),
-            })
-        } else {
-            console.warn(
-                '@shopware-pwa/composables-next or @shopware/api-client package is missing. ShopwareFrontendsCreditCard, ShopwareFrontendsIdeal and ShopwareFrontendsPos components were not registered.',
-            )
-        }
+        addComponent({
+            name: 'ShopwareFrontendsPos',
+            filePath: resolver.resolve('./runtime/components/ShopwareFrontendsPos.vue'),
+        })
     },
 })
