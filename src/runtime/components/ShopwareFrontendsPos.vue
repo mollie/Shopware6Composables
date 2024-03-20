@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useMollie, useAsyncData } from '#imports'
+import { useMollie, useAsyncData, useShopwareContext, useUser } from '#imports'
 import { onMounted, ref, type Ref } from 'vue'
 import type { MolliePosTerminal, MollieLocale } from '../../types'
-import { useShopwareContext, useUser } from '@shopware-pwa/composables-next'
 import { ApiClientError } from '@shopware/api-client'
 
 const emits = defineEmits<{
@@ -56,10 +55,10 @@ const getPosTerminals = async () => {
 
 const savePosTerminal = async () => {
     try {
-        await apiClient.invoke(
-            `storeTerminal post /mollie/pos/store-terminal/${user.value?.id}/${selectedTerminal.value}`,
-            {},
-        )
+        await apiClient.invoke('storeTerminal post /mollie/pos/store-terminal/{userId}/{terminalId}', {
+            userId: user.value?.id,
+            terminalId: selectedTerminal.value,
+        })
         emits('save-terminal-success')
     } catch (error) {
         if (error instanceof ApiClientError) {

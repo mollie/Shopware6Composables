@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useShopwareContext, useUser } from '@shopware-pwa/composables-next'
 import type { MollieLocale } from '../../types'
 import { computed } from 'vue'
-import { useAsyncData } from '#imports'
+import { useShopwareContext, useUser, useAsyncData } from '#imports'
 import { ApiClientError } from '@shopware/api-client'
 
 const emits = defineEmits<{
@@ -41,7 +40,9 @@ const getMandates = async () => {
     if (!oneClickPaymentsActive.value || !user.value?.id) return []
 
     try {
-        const response = await apiClient.invoke(`getMandates get /mollie/mandates/${user.value?.id}`)
+        const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
+            userId: user.value?.id,
+        })
         return response?.mandates
     } catch (error) {
         if (error instanceof ApiClientError) {
@@ -57,7 +58,10 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => getM
 
 const onRemoveMandate = async (mandateId: string | undefined) => {
     try {
-        await apiClient.invoke(`revokeMandate post /mollie/mandate/revoke/${user.value?.id}/${mandateId}`)
+        await apiClient.invoke('revokeMandate post /mollie/mandate/revoke/{userId}/{mandateId}', {
+            userId: user.value?.id,
+            mandateId: mandateId,
+        })
 
         // reload mandates
         mandates.value = await getMandates()

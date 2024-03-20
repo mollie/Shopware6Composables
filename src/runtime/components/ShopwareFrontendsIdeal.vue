@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useMollie, useAsyncData } from '#imports'
+import { useMollie, useAsyncData, useShopwareContext, useUser } from '#imports'
 import { onMounted, ref, type Ref } from 'vue'
 import type { MollieIdealIssuer, MollieLocale } from '../../types'
-import { useShopwareContext, useUser } from '@shopware-pwa/composables-next'
 import { ApiClientError } from '@shopware/api-client'
 
 const emits = defineEmits<{
@@ -56,10 +55,10 @@ const getIdealIssuers = async () => {
 
 const saveIdealIssuer = async () => {
     try {
-        await apiClient.invoke(
-            `storeIssuer post /mollie/ideal/store-issuer/${user.value?.id}/${activeIssuer.value}`,
-            {},
-        )
+        await apiClient.invoke('storeIssuer post /mollie/ideal/store-issuer/{userId}/{issuerId}', {
+            userId: user.value?.id,
+            issuerId: activeIssuer.value,
+        })
         emits('save-issuer-success')
     } catch (error) {
         if (error instanceof ApiClientError) {
