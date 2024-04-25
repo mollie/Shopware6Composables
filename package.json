@@ -2,7 +2,7 @@
   "name": "nuxt-mollie-payments-components",
   "version": "1.0.0",
   "description": "Nuxt mollie payments components",
-  "repository": "https://github.com/benjamin-ott/nuxt-mollie-payments-components",
+  "repository": "https://github.com/mollie/Shopware6Composables",
   "license": "MIT",
   "type": "module",
   "exports": {
