@@ -59,6 +59,10 @@ export type MollieLocale =
     | 'pl_PL'
     | 'lv_LV'
 
+type ReplaceUnderscoresWithDashes<T extends string> = T extends `${infer P1}_${infer P2}` ? `${P1}-${P2}` : T
+
+export type ShopwareLocale = ReplaceUnderscoresWithDashes<MollieLocale>
+
 export type MollieIdealIssuer = {
     id: string
     images: {
