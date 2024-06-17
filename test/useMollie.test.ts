@@ -4,6 +4,7 @@ import { useMollie } from './src/runtime/composables/useMollie'
 
 vi.mock('#imports', () => ({
     useNuxtApp: vi.fn(),
+    ref: vi.fn((initialValue) => ({ value: initialValue })),
 }))
 
 describe('useMollie', () => {
@@ -23,6 +24,7 @@ describe('useMollie', () => {
                 mollieInstance: {
                     createToken: mockCreateToken,
                 },
+                loadMollieScript: vi.fn().mockResolvedValue(true),
             },
         }
 
