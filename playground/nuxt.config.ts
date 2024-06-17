@@ -15,7 +15,7 @@ export default defineNuxtConfig({
         defaultLocale: 'en_US',
         profileId: 'pfl_E5EmGZ98YT',
         testMode: true,
-        includeScriptGlobally: false,
+        includeScriptGlobally: true,
     },
     devtools: { enabled: true },
 })
