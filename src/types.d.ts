@@ -23,13 +23,14 @@ export type CreateLocaleInstanceArgs = {
 
 declare global {
     interface Window {
-        Mollie: Mollie
+        Mollie?: Mollie
     }
 }
 
 export type MolliePlugin = {
     mollieInstance: ReturnType<Mollie> | null
     createMollieInstance(args: CreateLocaleInstanceArgs): void
+    scriptLoadedPromise: Promise<boolean>
 }
 declare module '#app' {
     interface NuxtApp {
@@ -82,6 +83,7 @@ export type MollieOptions = {
     profileId: string
     defaultLocale: MollieLocale
     testMode: boolean
+    includeScriptGlobally?: boolean
 }
 
 export type MollieConfig = {
@@ -116,11 +118,11 @@ export type MollieCreditCardMandate = {
 
 declare module 'nuxt/schema' {
     interface NuxtConfig {
-        mollie?: MollieOptions
+        molliePaymentsComponents?: MollieOptions
     }
 
     interface PublicRuntimeConfig {
-        mollie: MollieOptions
+        molliePaymentsComponents: MollieOptions
     }
 }
 

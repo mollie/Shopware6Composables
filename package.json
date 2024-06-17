@@ -30,7 +30,8 @@
     "prettier-check": "pnpm exec prettier . --check"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.8.2"
+    "@nuxt/kit": "^3.8.2",
+    "defu": "^6.1.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",

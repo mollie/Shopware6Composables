@@ -1,4 +1,4 @@
-import { useNuxtApp } from '#imports'
+import { useNuxtApp, ref } from '#imports'
 import type { CreateLocaleInstanceArgs } from '../../types'
 
 /**
@@ -6,9 +6,14 @@ import type { CreateLocaleInstanceArgs } from '../../types'
  */
 export function useMollie(args: CreateLocaleInstanceArgs = {}) {
     const { $mollie } = useNuxtApp()
+    const isInitialized = ref(false)
 
     async function init() {
-        $mollie.createMollieInstance(args)
+        // Wait for scripts to be loaded, then initialize the mollie instance.
+        await $mollie.scriptLoadedPromise.then(() => {
+            $mollie.createMollieInstance(args)
+            isInitialized.value = true
+        })
     }
 
     async function getToken(): Promise<string | undefined> {
@@ -23,5 +28,6 @@ export function useMollie(args: CreateLocaleInstanceArgs = {}) {
     return {
         init,
         getToken,
+        isInitialized,
     }
 }

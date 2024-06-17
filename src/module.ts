@@ -1,15 +1,25 @@
 import { defineNuxtModule, addPlugin, addImports, createResolver, addComponent } from '@nuxt/kit'
 
 import type { MollieOptions } from './types'
+import { defu } from 'defu'
 
 export default defineNuxtModule<MollieOptions>({
     meta: {
         name: 'nuxt-mollie-payments-components',
-        configKey: 'nuxtMolliePaymentsComponents',
+        configKey: 'molliePaymentsComponents',
+    },
+    defaults: {
+        profileId: '',
+        defaultLocale: 'en_US',
+        testMode: false,
+        includeScriptGlobally: true,
     },
     async setup(options, nuxt) {
         const resolver = createResolver(import.meta.url)
-        nuxt.options.runtimeConfig.public.mollie ||= options
+        nuxt.options.runtimeConfig.public.molliePaymentsComponents = defu(
+            nuxt.options.runtimeConfig.public.molliePaymentsComponents,
+            options,
+        )
 
         addPlugin({
             src: resolver.resolve('./runtime/plugins/plugin.server'),
