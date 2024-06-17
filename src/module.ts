@@ -17,7 +17,7 @@ export default defineNuxtModule<MollieOptions>({
     async setup(options, nuxt) {
         const resolver = createResolver(import.meta.url)
         nuxt.options.runtimeConfig.public.molliePaymentsComponents = defu(
-            nuxt.options.runtimeConfig.public.molliePaymentsComponents,
+            nuxt.options.runtimeConfig.public.molliePaymentsComponents as MollieOptions,
             options,
         )
 
