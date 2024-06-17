@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+    ssr: true,
     extends: ['@shopware-pwa/composables-next/nuxt-layer'],
     modules: ['../src/module', '@shopware-pwa/nuxt3-module'],
     runtimeConfig: {
@@ -10,10 +11,11 @@ export default defineNuxtConfig({
         },
     },
     /* config not needed with mollie > v4.4.0 */
-    mollie: {
+    molliePaymentsComponents: {
         defaultLocale: 'en_US',
         profileId: 'pfl_E5EmGZ98YT',
         testMode: true,
+        includeScriptGlobally: false,
     },
     devtools: { enabled: true },
 })

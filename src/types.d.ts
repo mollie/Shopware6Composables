@@ -30,7 +30,7 @@ declare global {
 export type MolliePlugin = {
     mollieInstance: ReturnType<Mollie> | null
     createMollieInstance(args: CreateLocaleInstanceArgs): void
-    scriptLoadedPromise: Promise<boolean>
+    loadMollieScript: () => Promise<boolean>
 }
 declare module '#app' {
     interface NuxtApp {

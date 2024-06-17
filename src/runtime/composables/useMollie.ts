@@ -10,7 +10,7 @@ export function useMollie(args: CreateLocaleInstanceArgs = {}) {
 
     async function init() {
         // Wait for scripts to be loaded, then initialize the mollie instance.
-        await $mollie.scriptLoadedPromise.then(() => {
+        await $mollie.loadMollieScript().then(() => {
             $mollie.createMollieInstance(args)
             isInitialized.value = true
         })

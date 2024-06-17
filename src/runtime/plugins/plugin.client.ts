@@ -23,25 +23,29 @@ export default defineNuxtPlugin({
     enforce: 'pre',
 
     async setup(nuxtApp) {
-        /*
+        /**
          * Register mollie-script client-side for client-side rendering.
          * If SSR is used, this will NOT register a second script, because it was already registered server side (see server-plugin)
          */
-        const { promise: scriptLoadedPromise, resolve } = getPromiseWithResolvers<boolean>()
-        if (window.Mollie) {
-            resolve(true)
-        } else {
-            useHead({
-                script: [
-                    {
-                        src: 'https://js.mollie.com/v1/mollie.js',
-                        defer: true,
-                        onload() {
-                            resolve(true)
+        function loadMollieScript() {
+            const { promise, resolve } = getPromiseWithResolvers<boolean>()
+            if (window.Mollie) {
+                resolve(true)
+            } else {
+                useHead({
+                    script: [
+                        {
+                            src: 'https://js.mollie.com/v1/mollie.js',
+                            defer: true,
+                            onload() {
+                                resolve(true)
+                            },
                         },
-                    },
-                ],
-            })
+                    ],
+                })
+            }
+
+            return promise
         }
 
         const runtimeConfig = useRuntimeConfig()
@@ -77,7 +81,7 @@ export default defineNuxtPlugin({
                 this.mollieInstance = this.mollieInstance || createLocaleInstance(args)
                 return this.mollieInstance
             },
-            scriptLoadedPromise,
+            loadMollieScript,
         }
 
         nuxtApp.provide('mollie', Mollie)
