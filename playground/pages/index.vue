@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import NavigationBar from '~/components/NavigationBar.vue'
 const CreditCardError = ref()
 const CreditCardToken = ref()
 
@@ -7,6 +8,7 @@ const IdealError = ref()
 </script>
 <template>
     <div>
+        <NavigationBar />
         <h1>Nuxt mollie payments components</h1>
 
         <h2>Credit Card</h2>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import NavigationBar from '~/components/NavigationBar.vue'
 const show = ref(false)
 const CreditCardError = ref()
 const CreditCardToken = ref()
@@ -7,6 +8,8 @@ const CreditCardToken = ref()
 
 <template>
     <div>
+        <NavigationBar />
+
         <h1>Load Mollie script lazily</h1>
         <div>On this page the scripts load lazily, if the button is clicked.</div>
         <div>To test this, the option <i>isIncludedGlobally: false</i> has to be set in nuxt config.</div>
