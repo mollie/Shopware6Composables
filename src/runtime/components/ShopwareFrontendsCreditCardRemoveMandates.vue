@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { MollieLocale } from '../../types'
+import type { MollieLocale, ShopwareLocale } from '../../types'
 import { computed } from 'vue'
 import { useShopwareContext, useUser, useAsyncData } from '#imports'
 import { ApiClientError } from '@shopware/api-client'
+import { shopwareLocaleToMollieLocale } from '../utils/localeTransformer'
 
 const emits = defineEmits<{
     (e: 'remove-mandate', mandateId: string | undefined): void
@@ -18,7 +19,15 @@ const { apiClient } = useShopwareContext()
 // get the mollie config
 const { data: mollieConfig } = await useAsyncData('mollieConfig', async () => {
     try {
-        return await apiClient.invoke('getConfig get /mollie/config')
+        const config = await apiClient.invoke('getConfig get /mollie/config')
+        // use the locale from the props if it exists, otherwise use the locale from the mollie config
+        // the locale-code from Shopware is in another format than the one from Mollie, so those have to be aligned.
+        if (config) {
+            const localeFromShopware = config.locale as ShopwareLocale
+            const mollieLocale = shopwareLocaleToMollieLocale(localeFromShopware)
+            config.locale = props.locale ?? mollieLocale
+        }
+        return config
     } catch (error) {
         if (error instanceof ApiClientError) {
             console.error(error)
@@ -27,9 +36,6 @@ const { data: mollieConfig } = await useAsyncData('mollieConfig', async () => {
         }
     }
 })
-
-// use the locale from the props if it exists, otherwise use the locale from the mollie config
-if (mollieConfig.value && props.locale) mollieConfig.value.locale = props.locale
 
 const { user } = useUser()
 
