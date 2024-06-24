@@ -2,6 +2,21 @@
 
 -   [📖 &nbsp;Documentation](https://frontends.shopware.com)
 
+## Usage
+1. Install with your package manager:
+```bash
+pnpm add nuxt-mollie-payments-components
+```
+
+2. Add the new nuxt module to the modules section of your nuxt.config.ts:
+```bash
+{
+  modules: [
+    'nuxt-mollie-payments-components',
+  ],
+}
+```
+
 ## Features
 
 <!-- Highlight some of the features your module provide here -->
