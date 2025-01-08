@@ -23,8 +23,11 @@ const removeMandate = async (id: string) => {
             class="mollie-credit-card-mandates-remove__item"
         >
             <div class="mollie-credit-card-mandates-remove__item-text">
-                {{ mandate.details.cardLabel }} - {{ mandate.details.cardHolder }} - ****
-                {{ mandate.details.cardNumber }}
+                {{
+                    mandate.details.cardLabel && mandate.details.cardHolder && mandate.details.cardNumber
+                        ? `${mandate.details.cardLabel} - ${mandate.details.cardHolder} - **** ${mandate.details.cardNumber}`
+                        : 'Invalid'
+                }}
             </div>
 
             <button
