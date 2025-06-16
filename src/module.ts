@@ -57,6 +57,11 @@ export default defineNuxtModule<MollieOptions>({
                 as: 'useMollie',
                 from: resolver.resolve('./runtime/composables/useMollie'),
             },
+            {
+                name: 'useShopwareMollie',
+                as: 'useShopwareMollie',
+                from: resolver.resolve('./runtime/composables/useShopwareMollie'),
+            },
         ])
 
         addComponent({

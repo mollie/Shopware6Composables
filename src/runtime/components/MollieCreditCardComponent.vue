@@ -18,7 +18,7 @@ const props = defineProps<{
     hideSaveButton?: boolean
 }>()
 
-const { init, getToken } = useMollie(props.mollieConfig)
+const { init, getToken } = useMollie()
 
 const { mount } = useMollieCreditCard({
     elementId: 'mollie-credit-card-container',
@@ -39,7 +39,7 @@ const onSaveCardChange = () => {
 }
 
 onMounted(async () => {
-    await init()
+    await init(props.mollieConfig)
     await mount()
     emits('mounted', true)
 })
