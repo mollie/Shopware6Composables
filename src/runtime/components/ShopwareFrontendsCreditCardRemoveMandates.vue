@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { MollieLocale, ShopwareLocale } from '../../types'
+import type { MollieLocale } from '../../types'
 import { computed } from 'vue'
-import { useShopwareContext, useUser, useAsyncData, watch } from '#imports'
+import { useShopwareContext, useUser, useAsyncData } from '#imports'
 import { ApiClientError } from '@shopware/api-client'
-import { shopwareLocaleToMollieLocale } from '../utils/localeTransformer'
 import { useShopwareMollie } from '../composables/useShopwareMollie'
 
 const emits = defineEmits<{
