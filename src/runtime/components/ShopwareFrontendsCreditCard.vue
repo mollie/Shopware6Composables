@@ -33,10 +33,10 @@ const { data: mollieConfig } = await useAsyncData('mollieConfig', async () => {
 
         // use the locale from the props if it exists, otherwise use the locale from the mollie config
         // the locale-code from Shopware is in another format than the one from Mollie, so those have to be aligned.
-        if (config) {
-            const localeFromShopware = config.locale as ShopwareLocale
+        if (config.data) {
+            const localeFromShopware = config.data.locale as ShopwareLocale
             const mollieLocale = shopwareLocaleToMollieLocale(localeFromShopware)
-            config.locale = props.locale ?? mollieLocale
+            config.data.locale = props.locale ?? mollieLocale
         }
 
         emits('config-loaded', config)
@@ -65,7 +65,7 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => {
         const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
             userId: user.value?.id,
         })
-        return response?.mandates
+        return response?.data.mandates
     } catch (error) {
         if (error instanceof ApiClientError) {
             console.error(error)

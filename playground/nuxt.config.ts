@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
     ssr: true,
-    extends: ['@shopware-pwa/composables-next/nuxt-layer'],
-    modules: ['../src/module', '@shopware-pwa/nuxt3-module'],
+    extends: ['@shopware/composables/nuxt-layer'],
+    modules: ['../src/module', '@shopware/nuxt-module'],
     runtimeConfig: {
         public: {
             shopware: {
