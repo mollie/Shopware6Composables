@@ -27,7 +27,9 @@ const getMandates = async () => {
 
     try {
         const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
-            userId: user.value?.id,
+            pathParams: {
+                userId: user.value?.id,
+            }
         })
         return response?.data.mandates
     } catch (error) {
@@ -45,8 +47,10 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => getM
 const onRemoveMandate = async (mandateId: string | undefined) => {
     try {
         await apiClient.invoke('revokeMandate post /mollie/mandate/revoke/{userId}/{mandateId}', {
-            userId: user.value?.id,
-            mandateId: mandateId,
+            pathParams: {
+                userId: user.value?.id,
+                mandateId: mandateId,
+            }
         })
 
         // reload mandates

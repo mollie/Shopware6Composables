@@ -46,7 +46,9 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => {
 
     try {
         const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
-            userId: user.value?.id,
+            pathParams: {
+                userId: user.value?.id,
+            }
         })
         return response?.data.mandates
     } catch (error) {
@@ -61,9 +63,13 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => {
 const onCreditCardSubmit = async (token: string | undefined) => {
     try {
         await apiClient.invoke('saveCardToken post /mollie/creditcard/store-token/{userId}/{token}', {
-            userId: user.value?.id,
-            token: token,
-            shouldSaveCardDetail: shouldSaveCardDetail.value,
+            pathParams: {
+                userId: user.value?.id,
+                token: token,
+            },
+            body: {
+                shouldSaveCardDetail: shouldSaveCardDetail.value,
+            }
         })
     } catch (error) {
         if (error instanceof ApiClientError) {

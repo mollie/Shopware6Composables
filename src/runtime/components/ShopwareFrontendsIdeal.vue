@@ -47,8 +47,10 @@ const getIdealIssuers = async () => {
 const saveIdealIssuer = async () => {
     try {
         await apiClient.invoke('storeIssuer post /mollie/ideal/store-issuer/{userId}/{issuerId}', {
-            userId: user.value?.id,
-            issuerId: activeIssuer.value,
+            pathParams: {
+                userId: user.value?.id,
+                issuerId: activeIssuer.value,
+            }
         })
         emits('save-issuer-success')
     } catch (error) {

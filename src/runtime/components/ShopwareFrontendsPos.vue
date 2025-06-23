@@ -47,8 +47,10 @@ const getPosTerminals = async () => {
 const savePosTerminal = async () => {
     try {
         await apiClient.invoke('storeTerminal post /mollie/pos/store-terminal/{userId}/{terminalId}', {
-            userId: user.value?.id,
-            terminalId: selectedTerminal.value,
+            pathParams: {
+                userId: user.value?.id,
+                terminalId: selectedTerminal.value,
+            }
         })
         emits('save-terminal-success')
     } catch (error) {
