@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.2.0
+
+[compare changes](https://github.com/mollie/Shopware6Composables/compare/v1.1.4...v1.2.0)
+
+### 🚀 Enhancements
+
+- Upgrade shopware-packages ([88e4b54](https://github.com/mollie/Shopware6Composables/commit/88e4b54))
+- Refactoring for code re-usage ([927a035](https://github.com/mollie/Shopware6Composables/commit/927a035))
+
+### 🩹 Fixes
+
+- Use correct format for payload-data in API-calls ([999ea41](https://github.com/mollie/Shopware6Composables/commit/999ea41))
+
+### ❤️ Contributors
+
+- Niklas Wolf ([@niklaswolf](http://github.com/niklaswolf))
+
 ## v1.1.4
 
 [compare changes](https://github.com/mollie/Shopware6Composables/compare/v1.1.3...v1.1.4)
