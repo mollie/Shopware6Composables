@@ -3,12 +3,15 @@
 -   [📖 &nbsp;Documentation](https://frontends.shopware.com)
 
 ## Usage
+
 1. Install with your package manager:
+
 ```bash
 pnpm add nuxt-mollie-payments-components
 ```
 
 2. Add the new nuxt module to the modules section of your nuxt.config.ts:
+
 ```bash
 {
   modules: [
@@ -30,7 +33,7 @@ pnpm add nuxt-mollie-payments-components
 ## Requirements
 
 -   Nuxt 3
--   installed: @shopware-pwa/nuxt3-module / @shopware-pwa/composables-next - optional if you want to use `ShopwareFrontendsCreditCard` component which sends additional request to Mollie's endpoint in order to store Credit Card token.
+-   installed: @shopware/nuxt-module / @shopware/composables - optional if you want to use `ShopwareFrontendsCreditCard` component which sends additional request to Mollie's endpoint in order to store Credit Card token.
 
 ## Development
 
@@ -102,7 +105,7 @@ const placeOrder = async () => {
             // save credit card details if needed (this is not needed if the credit card form uses it's own save button)
         } else if (!creditCardToken.value) {
             try {
-                const { getToken } = useMollie(mollieConfig.value)
+                const { getToken } = useMollie()
                 creditCardToken.value = await getToken()
 
                 await apiClient.invoke(

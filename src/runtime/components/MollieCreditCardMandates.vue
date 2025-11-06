@@ -49,9 +49,10 @@ const changeMandate = async () => {
                         class="mollie-credit-card-mandates__radio-styled-checked"
                     />
                 </span>
-                {{ mandate.details.cardLabel && mandate.details.cardHolder && mandate.details.cardNumber
-                    ? `${mandate.details.cardLabel} - ${mandate.details.cardHolder} - **** ${mandate.details.cardNumber}`
-                    : 'Invalid'
+                {{
+                    mandate.details.cardLabel && mandate.details.cardHolder && mandate.details.cardNumber
+                        ? `${mandate.details.cardLabel} - ${mandate.details.cardHolder} - **** ${mandate.details.cardNumber}`
+                        : 'Invalid'
                 }}
             </label>
         </div>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { MollieLocale, ShopwareLocale } from '../../types'
+import type { MollieLocale } from '../../types'
 import { computed } from 'vue'
 import { useShopwareContext, useUser, useAsyncData } from '#imports'
 import { ApiClientError } from '@shopware/api-client'
-import { shopwareLocaleToMollieLocale } from '../utils/localeTransformer'
+import { useShopwareMollie } from '../composables/useShopwareMollie'
 
 const emits = defineEmits<{
     (e: 'remove-mandate', mandateId: string | undefined): void
@@ -15,27 +15,7 @@ const props = defineProps<{
 }>()
 
 const { apiClient } = useShopwareContext()
-
-// get the mollie config
-const { data: mollieConfig } = await useAsyncData('mollieConfig', async () => {
-    try {
-        const config = await apiClient.invoke('getConfig get /mollie/config')
-        // use the locale from the props if it exists, otherwise use the locale from the mollie config
-        // the locale-code from Shopware is in another format than the one from Mollie, so those have to be aligned.
-        if (config) {
-            const localeFromShopware = config.locale as ShopwareLocale
-            const mollieLocale = shopwareLocaleToMollieLocale(localeFromShopware)
-            config.locale = props.locale ?? mollieLocale
-        }
-        return config
-    } catch (error) {
-        if (error instanceof ApiClientError) {
-            console.error(error)
-        } else {
-            console.error('==>', error)
-        }
-    }
-})
+const { mollieConfig } = useShopwareMollie({ locale: props.locale })
 
 const { user } = useUser()
 
@@ -47,9 +27,11 @@ const getMandates = async () => {
 
     try {
         const response = await apiClient.invoke('getMandates get /mollie/mandates/{userId}', {
-            userId: user.value?.id,
+            pathParams: {
+                userId: user.value?.id,
+            }
         })
-        return response?.mandates
+        return response?.data.mandates
     } catch (error) {
         if (error instanceof ApiClientError) {
             console.error(error)
@@ -65,8 +47,10 @@ const { data: mandates } = await useAsyncData('mollieMandates', async () => getM
 const onRemoveMandate = async (mandateId: string | undefined) => {
     try {
         await apiClient.invoke('revokeMandate post /mollie/mandate/revoke/{userId}/{mandateId}', {
-            userId: user.value?.id,
-            mandateId: mandateId,
+            pathParams: {
+                userId: user.value?.id,
+                mandateId: mandateId,
+            }
         })
 
         // reload mandates

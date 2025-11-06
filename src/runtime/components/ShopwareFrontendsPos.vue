@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useMollie, useAsyncData, useShopwareContext, useUser } from '#imports'
+import { useMollie, useShopwareContext, useUser, watch } from '#imports'
 import { onMounted, ref, type Ref } from 'vue'
-import type { MolliePosTerminal, MollieLocale, ShopwareLocale } from '../../types'
+import type { MolliePosTerminal, MollieLocale } from '../../types'
 import { ApiClientError } from '@shopware/api-client'
-import { shopwareLocaleToMollieLocale } from '../utils/localeTransformer'
+import { useShopwareMollie } from '../composables/useShopwareMollie'
 
 const emits = defineEmits<{
     (e: 'get-terminals-error', error: string | undefined): void
@@ -18,28 +18,12 @@ const props = defineProps<{
 }>()
 
 const { apiClient } = useShopwareContext()
-
-const { data: mollieConfig } = await useAsyncData('mollieConfig', async () => {
-    try {
-        const config = await apiClient.invoke('getConfig get /mollie/config')
-        // use the locale from the props if it exists, otherwise use the locale from the mollie config
-        // the locale-code from Shopware is in another format than the one from Mollie, so those have to be aligned.
-        if (config) {
-            const localeFromShopware = config.locale as ShopwareLocale
-            const mollieLocale = shopwareLocaleToMollieLocale(localeFromShopware)
-            config.locale = props.locale ?? mollieLocale
-        }
-        return config
-    } catch (error) {
-        if (error instanceof ApiClientError) {
-            console.error(error)
-        } else {
-            console.error('==>', error)
-        }
-    }
+const { mollieConfig } = useShopwareMollie({ locale: props.locale })
+const { init } = useMollie()
+watch(mollieConfig, () => {
+    init(mollieConfig.value)
 })
 
-const { init } = useMollie(mollieConfig.value)
 const { user } = useUser()
 
 const terminals: Ref<MolliePosTerminal[] | []> = ref([])
@@ -49,7 +33,7 @@ const getPosTerminals = async () => {
     try {
         const terminalsResponse = await apiClient.invoke('getIssuers get /mollie/pos/terminals')
 
-        terminals.value = terminalsResponse?.terminals
+        terminals.value = terminalsResponse?.data.terminals
     } catch (error) {
         if (error instanceof ApiClientError) {
             console.error(error)
@@ -63,8 +47,10 @@ const getPosTerminals = async () => {
 const savePosTerminal = async () => {
     try {
         await apiClient.invoke('storeTerminal post /mollie/pos/store-terminal/{userId}/{terminalId}', {
-            userId: user.value?.id,
-            terminalId: selectedTerminal.value,
+            pathParams: {
+                userId: user.value?.id,
+                terminalId: selectedTerminal.value,
+            }
         })
         emits('save-terminal-success')
     } catch (error) {
@@ -78,7 +64,6 @@ const savePosTerminal = async () => {
 }
 
 onMounted(async () => {
-    await init()
     await getPosTerminals()
 })
 </script>

@@ -4,11 +4,11 @@ import type { CreateLocaleInstanceArgs } from '../../types'
 /**
  * Composable function to initialize mollie instance and get payment session token
  */
-export function useMollie(args: CreateLocaleInstanceArgs = {}) {
+export function useMollie() {
     const { $mollie } = useNuxtApp()
     const isInitialized = ref(false)
 
-    async function init() {
+    async function init(args: CreateLocaleInstanceArgs = {}) {
         // Wait for scripts to be loaded, then initialize the mollie instance.
         await $mollie.loadMollieScript().then(() => {
             $mollie.createMollieInstance(args)
